@@ -1,0 +1,233 @@
+---
+title: "1_AnalysisRaster"
+author: "Jojo"
+date: "6 March 2016"
+output: html_document
+---
+
+Lecture 5: Read in raster data using R
+
+```{r}
+library(raster)
+setwd("F:\\R_asGIS\\1ANALYSIS")
+band1=raster("band1.tif")
+band1
+
+band3=raster("band3.tif")
+band3
+
+band4=raster("band4.tif")
+band4
+
+plot(band1)
+
+band2=raster("band2.img")
+band2
+
+b3=raster("CA2015_new.rst")
+writeRaster(b3,"ConvertToTif.tif",overwrite=TRUE) 
+
+setwd("F:\\R_asGIS\\1ANALYSIS\\bands")
+
+rlist=list.files(pattern="tif$", full.names=TRUE) 
+# CREATE RASTER STACK
+rasters = stack(rlist)
+
+#Examine your raster stack
+names(rasters)
+rasters
+plot(rasters)
+
+
+```
+
+Lecture 6: Examine and Modify CRS of a raster band
+
+```{r}
+setwd("F:\\R_asGIS\\1ANALYSIS")
+band1
+
+b1LL <- projectRaster(band1, crs='+proj=longlat')
+b1LL
+plot(b1LL)
+
+
+
+#lat long to utm
+
+x=" +proj=utm +zone=48 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"
+
+b1U=projectRaster(b1LL,crs=x)
+b1U
+
+```
+
+Lecture 7: Modify raster stack
+
+```{r}
+band1=raster("band1.tif")
+band1
+
+band3=raster("band3.tif")
+band3
+
+band4=raster("band4.tif")
+band4
+
+stackR=stack(band1,band3,band4)
+plot(stackR)
+
+bR=brick(band1,band3,band4)
+bR
+
+plot(stackR$band1)
+
+setwd("F:\\R_asGIS\\1ANALYSIS\\bands")
+
+rlist=list.files(pattern="tif$", full.names=TRUE) 
+# CREATE RASTER STACK
+rasters = stack(rlist)
+
+rasters
+
+#Drop layers: from a given stack, specify the index of the layer to be dropped
+#in this case, drop the 6th layer
+rastersD1=dropLayer(rasters,6)
+names(rastersD1)
+
+rastersD2=dropLayer(rasters,c(1,6))#specify indices 1 and 6
+
+rastAdd=addLayer(rastersD2,band1) #add b1 to the stack
+
+```
+
+Lecture 8: Plot RGB Composites
+
+```{r}
+rasters #please read in all 6 Landsat bands
+
+plotRGB(rasters,r=3,g=2,b=1, stretch = "hist")
+
+plotRGB(rasters,r=3,g=2,b=1, scale=800, stretch = "Lin")
+
+plotRGB(rasters,r=4,g=3,b=2, stretch = "hist")
+
+```
+
+Lecture 9a: Band arithmetic on raster data
+
+```{r}
+rasters
+
+s=calc(rasters,sum) #will sum up all raster bands
+
+func <- function(x) ##apply a custom function to your stack
+{ 
+  x[x<300] <- NA 
+  return(x) 
+}
+rc2 <- calc(s, func)
+
+s2=s[s<300]<-NA 
+
+# (NIR-Red)/(NIR+Red)
+
+ndvi=(rasters$band4-rasters$band3)/(rasters$band3+rasters$band4) 
+plot(ndvi) #0 to 1
+
+```
+
+Lecture 10: RECLASSIFY: BUILD A CATEGORICAL MAP
+
+```{r}
+m <- c(-0.2, 0.2, 1,  0.2, 0.6, 2,  0.6,1, 3)
+mat <- matrix(m, ncol=3, byrow=TRUE) #matrix of categorical value classes 
+
+rc <- reclassify(ndvi, mat)
+plot(rc)
+
+```
+
+Lecture 11: Calculate  % land cover of categorical maps
+
+```{r}
+library(SDMTools)
+
+#our reclassified raster is in UTM. For SDMTools we need it in lat long
+
+#rc2 <- projectRaster(rc, crs='+proj=longlat')
+
+#c=ClassStat(rc, cellsize = 30, latlon = FALSE)
+
+```
+
+Lecture 13: Resampling rasters
+
+```{r}
+setwd("F:\\R_asGIS\\1ANALYSIS")
+h=raster("tamd_hill.tif")
+n=raster("tamd_ndvi.tif")
+
+plot(n)
+nLL <- projectRaster(n, crs='+proj=longlat')
+
+n2=resample(nLL,h,"ngb")
+
+
+```
+
+Lecture 14: Clipping Rasters in R
+
+```{r}
+library(raster)
+hill=raster("1hillshade.tif")
+plot(hill)
+
+e <- extent(105.6, 105.7, 20.5, 21.5) # longitude, latitude
+
+abs=crop(hill,e2)
+plot(abs)
+
+e2=drawExtent()#-- this is a dynamic clipping tools. It has been #
+#for compilation
+
+library(rgdal)
+tdao=readOGR(".","VietnamPA_name__Tam Dao")
+plot(tdao,add=T)
+
+A=mask(hill,tdao)
+plot(A)
+
+pa1=readOGR(".","VietnamPA")
+plot(pa1,add=T)
+dat <- extract(hill, pa1,fun=mean, na.rm=TRUE)
+head(dat)
+
+
+```
+
+Lecture 16: Topographic Calculations in R
+
+```{r}
+#1)Read in raster of digital elevation model (DEM) already stored on hard drive 
+dem=raster("vie_dem_srtm.tif")#elevation in m
+
+#2)Download elevation data from internet
+#country code: http://max2.ese.u-psud.fr/epc/conservation/Girondot/Publications/Blog_r/Entrees/2014/11/2_Other_geographic_databases.html
+dem2 = getData("alt", country = "VNM") #you can calculate slope etc from these
+
+#4)Plot areas of a certain value of elevation
+plot(dem, zlim=c(1000,3000),main="Elevation 1000m-3000m") #areas where elevation is between 1000m-3000m
+
+slope=terrain(dem,opt="slope",unit="degrees")#calc slope in degrees
+aspect=terrain(dem,opt="aspect")
+
+x <- terrain(dem, opt = c("slope", "aspect"), unit = "degrees") #plot slope and aspect in degrees
+plot(x)
+
+hill <- hillShade(slope, aspect, 40, 270)#hilshade
+plot(hill)
+
+
+```
+
