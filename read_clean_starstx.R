@@ -25,29 +25,30 @@ stars7_master$longitude <- lon
 
 
 # Transaction Data of 7 days stock and sales
-stars_7_days_dt <- read.csv("stock level.csv")
-cnames <- c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7","Station_Name","Station_ID","Station_Region","Diesel_Quota","Tank_ID","Product_Name","Day_1_Sales","Day_1_Stock","Day_2_Sales","Day_2_Stock","Day_3_Sales","Day_3_Stock","Day_4_Sales","Day_4_Stock","Day_5_Sales","Day_5_Stock","Day_6_Sales","Day_6_Stock","Day_7_Sales","Day_7_Stock")
+stars_7_days_dt <- read.csv("data/PRD_Stock Level and Sales-14-10-2016.csv")
+cnames <- c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7","Station_Name","Station_ID","Station_Region","Diesel_Quota","Tank_ID","Product_Name","Day_1_Sales","Day_2_Sales","Day_3_Sales","Day_4_Sales","Day_5_Sales","Day_6_Sales","Day_7_Sales","Day_1_Stock","Day_2_Stock","Day_3_Stock","Day_4_Stock","Day_5_Stock","Day_6_Stock","Day_7_Stock")
 names(stars_7_days_dt) <- cnames
-date_range <- stars_7_days_dt[1,1:7]
-cnames <- c(paste(date_range[1,1],"sales",sep = "_"),
-            paste(date_range[1,1],"stock",sep = "_"),
-            paste(date_range[1,2],"sales",sep = "_"),
-            paste(date_range[1,2],"stock",sep = "_"),
-            paste(date_range[1,3],"sales",sep = "_"),
-            paste(date_range[1,3],"stock",sep = "_"),
-            paste(date_range[1,4],"sales",sep = "_"),
-            paste(date_range[1,4],"stock",sep = "_"),
-            paste(date_range[1,5],"sales",sep = "_"),
-            paste(date_range[1,5],"stock",sep = "_"),
-            paste(date_range[1,6],"sales",sep = "_"),
-            paste(date_range[1,6],"stock",sep = "_"),
-            paste(date_range[1,7],"sales",sep = "_"),
-            paste(date_range[1,7],"stock",sep = "_"))
+#date_range <- stars_7_days_dt[1,1:7]
+date_range <- as.character(unlist(unname(stars_7_days_dt[1,1:7])))
+cnames <- c(paste(date_range[1],"sales",sep = "_"),
+            paste(date_range[2],"sales",sep = "_"),
+            paste(date_range[3],"sales",sep = "_"),
+            paste(date_range[4],"sales",sep = "_"),
+            paste(date_range[5],"sales",sep = "_"),
+            paste(date_range[6],"sales",sep = "_"),
+            paste(date_range[7],"sales",sep = "_"),
+            paste(date_range[1],"stock",sep = "_"),
+            paste(date_range[2],"stock",sep = "_"),
+            paste(date_range[3],"stock",sep = "_"),
+            paste(date_range[4],"stock",sep = "_"),
+            paste(date_range[5],"stock",sep = "_"),
+            paste(date_range[6],"stock",sep = "_"),
+            paste(date_range[7],"stock",sep = "_"))
 cnames <- c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7","Station_Name","Station ID","Station_Region","Diesel_Quota","Tank_ID","Product_Name",cnames)
 names(stars_7_days_dt) <- cnames
-#stars_7_days_dt$Start_Date_data <- stars_7_days_dt$Day_1
-#stars_7_days_dt$End_Date_data <- stars_7_days_dt$Day_7
-# txdata <- txdata[-c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7")]
+stars_7_days_dt$Start_Date_data <- stars_7_days_dt$Day_1
+stars_7_days_dt$End_Date_data <- stars_7_days_dt$Day_7
+txdata <- txdata[-c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7")]
 
 stars_7_days_dt <- stars_7_days_dt[,-(1:7),drop=FALSE]
 #stars_7_days_dt <- data.table(stars_7_days_dt)

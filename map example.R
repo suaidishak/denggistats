@@ -1,6 +1,8 @@
-x <- c("ggmap", "rgdal", "rgeos", "maptools", "dplyr", "tidyr", "tmap")
+x <- c("ggmap", "rgdal", "rgeos", "maptools", "dplyr", "tidyr", "tmap","shapefiles")
 lapply(x, library, character.only = TRUE) # load the required packages
-
+# library(maptools)
+x <- CRS("+proj=longlat +ellps=WGS84")
+setwd("~/Documents/denggistats")
 mysadmin <- readOGR(dsn = "data", layer = "MYS_adm2")
 
 head(lnd@data, n = 2)
@@ -41,9 +43,9 @@ head(mys@polygons[[1]]@Polygons[[1]]@coords, 3)
 plot(mys@polygons[[1]]@Polygons[[1]]@coords)
 
 map.selangor <- subset(mysadmin, mysadmin$NAME_1 == "Selangor")
-data.sel <- stars_master_data[stars_master_data$State == "SEL",]
-g <- ggplot() +  geom_polygon(data=map.selangor, aes(x=long, y=lat, group=group))
-g <- g +  geom_point(data=data.sel, aes(x=lon, y=lat), color="red")
+data.sel <- stars7_master[stars7_master$State == "SEL",]
+g <- ggplot() +  geom_polygon(data=map.selangor, aes(x=longitude, y=latitude, group=group))
+g <- g +  geom_point(data=data.sel, aes(x=longitude, y=latitude), color="red")
 g
 
 # class(data.sel)
