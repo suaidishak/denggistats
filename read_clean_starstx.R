@@ -30,29 +30,29 @@ cnames <- c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7","Station_Nam
 names(stars_7_days_dt) <- cnames
 #date_range <- stars_7_days_dt[1,1:7]
 date_range <- as.character(unlist(unname(stars_7_days_dt[1,1:7])))
-cnames <- c(paste(date_range[1],"sales",sep = "_"),
-            paste(date_range[2],"sales",sep = "_"),
-            paste(date_range[3],"sales",sep = "_"),
-            paste(date_range[4],"sales",sep = "_"),
-            paste(date_range[5],"sales",sep = "_"),
-            paste(date_range[6],"sales",sep = "_"),
-            paste(date_range[7],"sales",sep = "_"),
-            paste(date_range[1],"stock",sep = "_"),
-            paste(date_range[2],"stock",sep = "_"),
-            paste(date_range[3],"stock",sep = "_"),
-            paste(date_range[4],"stock",sep = "_"),
-            paste(date_range[5],"stock",sep = "_"),
-            paste(date_range[6],"stock",sep = "_"),
-            paste(date_range[7],"stock",sep = "_"))
-cnames <- c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7","Station_Name","Station ID","Station_Region","Diesel_Quota","Tank_ID","Product_Name",cnames)
+cnames <- c(paste(date_range[1],"Sales",sep = "_"),
+            paste(date_range[2],"Sales",sep = "_"),
+            paste(date_range[3],"Sales",sep = "_"),
+            paste(date_range[4],"Sales",sep = "_"),
+            paste(date_range[5],"Sales",sep = "_"),
+            paste(date_range[6],"Sales",sep = "_"),
+            paste(date_range[7],"Sales",sep = "_"),
+            paste(date_range[1],"Stock",sep = "_"),
+            paste(date_range[2],"Stock",sep = "_"),
+            paste(date_range[3],"Stock",sep = "_"),
+            paste(date_range[4],"Stock",sep = "_"),
+            paste(date_range[5],"Stock",sep = "_"),
+            paste(date_range[6],"Stock",sep = "_"),
+            paste(date_range[7],"Stock",sep = "_"))
+cnames <- c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7","Station_Name","Station_ID","Station_Region","Diesel_Quota","Tank_ID","Product_Name",cnames)
 names(stars_7_days_dt) <- cnames
 stars_7_days_dt$Start_Date_data <- stars_7_days_dt$Day_1
 stars_7_days_dt$End_Date_data <- stars_7_days_dt$Day_7
-txdata <- txdata[-c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7")]
+#txdata <- txdata[-c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7")]
 
 stars_7_days_dt <- stars_7_days_dt[,-(1:7),drop=FALSE]
 #stars_7_days_dt <- data.table(stars_7_days_dt)
 #write.csv(stars_7_days_dt[,c(2,1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)],file = "data/stars_tx_reordered.csv")
 #stars_7_days_dt <- read.csv("data/stars_tx_reordered.csv")
-stars7 <- stars_7_days_dt[,c(2,1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)]
+#stars7 <- stars_7_days_dt[,c(2,1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)]
 
