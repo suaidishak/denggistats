@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 x <- c("ggmap", "rgdal", "rgeos", "maptools", "dplyr", "tidyr", "tmap","googleVis","ggplot2","data.table","raster","sp","shapefiles","rworldmap")
 lapply(x, library, character.only = TRUE) # load the required packages
 x <- CRS("+proj=longlat +ellps=WGS84")
@@ -13,6 +14,14 @@ plot(mys,add=T,axes=T,border="red")
 selangor <- subset(mys, mys$NAME_1=="Selangor")
 plot(selangor,add=T,col="blue")
 #mysadmin <- readOGR(dsn = "data", layer = "MYS_adm2")
+=======
+x <- c("ggmap", "rgdal", "rgeos", "maptools", "dplyr", "tidyr", "tmap","shapefiles")
+lapply(x, library, character.only = TRUE) # load the required packages
+# library(maptools)
+x <- CRS("+proj=longlat +ellps=WGS84")
+setwd("~/Documents/denggistats")
+mysadmin <- readOGR(dsn = "data", layer = "MYS_adm2")
+>>>>>>> 8b126f9377db9dc6def36b77a9d00d7615bd7962
 
 
 #mal_filepath = "/Users/sratne/Documents/Tableau Datasets/Data Science /MYS_adm_shp/R_GIS_data/MYS_adm_shp"
@@ -22,9 +31,9 @@ plot(selangor,add=T,col="blue")
 #plot(mys@polygons[[1]]@Polygons[[1]]@coords)
 
 map.selangor <- subset(mysadmin, mysadmin$NAME_1 == "Selangor")
-data.sel <- stars_master_data[stars_master_data$State == "SEL",]
-g <- ggplot() +  geom_polygon(data=map.selangor, aes(x=long, y=lat, group=group))
-g <- g +  geom_point(data=data.sel, aes(x=lon, y=lat), color="red")
+data.sel <- stars7_master[stars7_master$State == "SEL",]
+g <- ggplot() +  geom_polygon(data=map.selangor, aes(x=longitude, y=latitude, group=group))
+g <- g +  geom_point(data=data.sel, aes(x=longitude, y=latitude), color="red")
 g
 
 # class(data.sel)
