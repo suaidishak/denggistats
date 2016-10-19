@@ -2,10 +2,14 @@ library(data.table)
 library(tidyr)
 
 
-
+library(dplyr)
+library(readr)
+#stars7_master_retail <- list.files(full.names = TRUE,path = "data",pattern = "PRD") %>% lapply(read_csv2) %>% bind_rows 
 stars7_master_retail <- read.csv("PRD_Stock Level and Sales(Retail).csv",stringsAsFactors = F)
+
+#stars7_master_retail <- rbind(stars1,stars2,stars3,stars4,stars5,stars6,stars7,stars8,stars9)
 #stars7_master_retail <- stars7_master_retail[,c(2,1,3:62)]
-# cnames <- c("ForeignID","Name","Default.terminal",
+# cnames <- c("Station_name","Station_ID","Default.terminal",
 #             "Monthly.Diesel.Quota","Street",
 #             "Bandar","State","District",                              
 #         "Region..North..South..East.or.Central.","Email",
@@ -34,7 +38,7 @@ stars7_master_retail <- read.csv("PRD_Stock Level and Sales(Retail).csv",strings
 #         "Contact.Name"                      ,     "Consolidation.Group"   ,                
 #         "Closing.time"                      ,     "Binary.opening.weekdays.string"   ,     
 #         "Alternative.Street"                 ,    "Address.District" )                     
-cnames <- c("Station_ID","Name","Default_Terminal",
+cnames <- c("Station_Name","Station_ID","Default_Terminal",
             "Monthly_Diesel_Quota","Street",
             "City","State","District",                              
             "Region","Email",
@@ -84,7 +88,7 @@ lon <- substr(lonlat,pos_comma +1,nchar(lonlat)-1)
 stars7_master_retail$latitude <- lat
 stars7_master_retail$longitude <- lon
 
-rm(cnames,lat,lon,lonlat,pos_comma,stars7_master_raw)
+rm(cnames,lat,lon,lonlat,pos_comma)
 
 stars7_master_retail$Station_ID <- as.character(stars7_master_retail$Station_ID)
 stars7_master_retail$Postcode <- as.character(stars7_master_retail$Postcode)
@@ -108,7 +112,17 @@ stars7_master_retail$City <-  sapply(stars7_master_retail$City, tolower)
 stars7_master_retail$City <-  sapply(stars7_master_retail$City, simpleCap)
 #rm(stars7_master_raw)
 # Transaction Data of 7 days stock and sales
-stars_7_days_dt <- read.csv("data/PRD_Stock Level and Sales-14-10-2016.csv",stringsAsFactors = F)
+#stars_7_days_dt <- read.csv("data/PRD_Stock Level and Sales-14-10-2016.csv",stringsAsFactors = F)
+stars1 <- read.csv("data/PRD_Stock Level and Sales-Jan-2016.csv",stringsAsFactors = F)
+stars2 <- read.csv("data/PRD_Stock Level and Sales-Feb-2016.csv",stringsAsFactors = F)
+stars3 <- read.csv("data/PRD_Stock Level and Sales-Mac-2016.csv",stringsAsFactors = F)
+stars4 <- read.csv("data/PRD_Stock Level and Sales-Apr-2016.csv",stringsAsFactors = F)
+stars5 <- read.csv("data/PRD_Stock Level and Sales-May-2016.csv",stringsAsFactors = F)
+stars6 <- read.csv("data/PRD_Stock Level and Sales-Jun-2016.csv",stringsAsFactors = F)
+stars7 <- read.csv("data/PRD_Stock Level and Sales-Jul-2016.csv",stringsAsFactors = F)
+stars8 <- read.csv("data/PRD_Stock Level and Sales-Aug-2016.csv",stringsAsFactors = F)
+stars9 <- read.csv("data/PRD_Stock Level and Sales-Sep-2016.csv",stringsAsFactors = F)
+stars_7_days_dt <- rbind(stars1,stars2,stars3,stars4,stars5,stars6,stars7,stars8,stars9)
 cnames <- c("Day_1","Day_2","Day_3","Day_4","Day_5","Day_6","Day_7","Station_Name","Station_ID","Station_Region","Diesel_Quota","Tank_ID","Product_Name","Day_1_Sales","Day_2_Sales","Day_3_Sales","Day_4_Sales","Day_5_Sales","Day_6_Sales","Day_7_Sales","Day_1_Stock","Day_2_Stock","Day_3_Stock","Day_4_Stock","Day_5_Stock","Day_6_Stock","Day_7_Stock")
 names(stars_7_days_dt) <- cnames
 #date_range <- stars_7_days_dt[1,1:7]

@@ -92,3 +92,24 @@ ggplot(home.land.byyear,
            color=type)) +
         geom_line()
 
+nmmaps<-read.csv("data/chicago-nmmaps.csv", as.is=T)
+nmmaps$date<-as.Date(nmmaps$date)
+nmmaps<-nmmaps[nmmaps$date>as.Date("1996-12-31"),]
+nmmaps$year<-substring(nmmaps$date,1,4)
+g<-ggplot(nmmaps, aes(date, temp))+geom_point(color="firebrick")
+g<-g+ggtitle('Temperature')
+g+theme(plot.title = element_text(size=20, face="bold", 
+                                  margin = margin(10, 0, 10, 0)))
+library(extrafont)
+library(plotly)
+g+theme(plot.title = element_text(size=30,lineheight=.8, 
+                                  vjust=1,family="Bauhaus 93"))
+
+g + theme(axis.text.x=element_text(angle=50, size=20, vjust=0.5))
+ggplot(nmmaps, aes(date,temp))+geom_point(color="aquamarine4")+facet_wrap(~year, nrow=1)
+g<-ggplot(nmmaps, aes(x=season, y=o3))
+g+geom_boxplot(fill="darkseagreen4")
+
+ggplot(nmmaps, aes(date, temp, color=factor(season)))+  geom_point() +   
+        scale_color_manual(values=c("dodgerblue4", "darkolivegreen4",  
+                                    "darkorchid3", "goldenrod1"))
